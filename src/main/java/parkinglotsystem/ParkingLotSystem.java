@@ -4,16 +4,25 @@ public class ParkingLotSystem {
 
 	private Object vehicle;
 
-	public boolean parkingVehicle(Object vehicle) {
+	public void parkingVehicle(Object vehicle) {
 		this.vehicle = vehicle;
-		return true;
 	}
 
-	public boolean unParkingVehicle(Object vehicle) {
+	public void unParkingVehicle(Object vehicle) {
 		if(this.vehicle.equals(vehicle)) {
 			this.vehicle = null;
-			return true;
 		}
+	}
+
+	public boolean isVehicleParked(Object vehicle) {
+		if(this.vehicle.equals(vehicle))
+			return true;
+		return false;
+	}
+
+	public boolean isVehicleNotParked(Object vehicle) {
+		if (this.vehicle == null)
+			return true;
 		return false;
 	}
 }

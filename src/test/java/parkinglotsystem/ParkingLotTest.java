@@ -17,21 +17,24 @@ public class ParkingLotTest {
 
 	@Test
 	public void givenAVehicle_WhenParked_ShouldReturnTrue() {
-		boolean isParked = parkingLotSystem.parkingVehicle(vehicle);
+		parkingLotSystem.parkingVehicle(vehicle);
+		boolean isParked = parkingLotSystem.isVehicleParked(vehicle);
 		Assert.assertTrue(isParked);
 	}
 
 	@Test
 	public void givenAVehicle_WhenIsNotParked_ShouldReturnTrue() {
 		parkingLotSystem.parkingVehicle(vehicle);
-		boolean isNotParked = parkingLotSystem.unParkingVehicle(vehicle);
+		parkingLotSystem.unParkingVehicle(vehicle);
+		boolean isNotParked = parkingLotSystem.isVehicleNotParked(vehicle);
 		Assert.assertTrue(isNotParked);
 	}
 
 	@Test
 	public void givenAVehicle_WhenUnparkedAnotherVehicle_ShouldReturnFalse() {
 		parkingLotSystem.parkingVehicle(vehicle);
-		boolean isNotParked = parkingLotSystem.unParkingVehicle(new Object());
+		parkingLotSystem.unParkingVehicle(new Object());
+		boolean isNotParked = parkingLotSystem.isVehicleNotParked(new Object());
 		Assert.assertFalse(isNotParked);
 	}
 }
