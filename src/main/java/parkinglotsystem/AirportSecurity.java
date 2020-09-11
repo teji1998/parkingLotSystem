@@ -6,11 +6,17 @@ public class AirportSecurity {
 
 	public void parkingFull(boolean isFull) {
 		if(isFull)
-			AirportSecurity.isFull = true;
+			AirportSecurity.isFull = isFull;
 	}
 
 	public boolean isParkingFull() {
 		if (isFull)
+			return true;
+		return false;
+	}
+
+	public boolean isParkingNotFull() {
+		if (!isFull)
 			return true;
 		return false;
 	}

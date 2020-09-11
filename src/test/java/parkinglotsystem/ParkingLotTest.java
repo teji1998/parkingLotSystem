@@ -75,4 +75,25 @@ public class ParkingLotTest {
 		boolean parkingFull = airportSecurity.isParkingFull();
 		Assert.assertFalse(parkingFull);
 	}
+
+	@Test
+	public void givenAVehicle_WhenParkingLotIsNotFull_ShouldInformParkingLotOwner() {
+		try {
+			parkingLotSystem.parkingVehicle(vehicle);
+			parkingLotSystem.unParkingVehicle(vehicle);
+		} catch (ParkingLotException e) {
+			boolean notFull = parkingLotOwner.isParkingNotFull();
+			Assert.assertTrue(notFull);
+		}
+	}
+
+	@Test
+	public void givenAVehicle_WhenParkingLotIsFull_ShouldReturnFalse() {
+		try {
+			parkingLotSystem.parkingVehicle(vehicle);
+		} catch (ParkingLotException e) {
+			boolean notFull = parkingLotOwner.isParkingNotFull();
+			Assert.assertFalse(notFull);
+		}
+	}
 }

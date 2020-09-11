@@ -17,6 +17,7 @@ public class ParkingLotSystem {
 	public void unParkingVehicle(Object vehicle) {
 		if(this.vehicle.equals(vehicle)) {
 			this.vehicle = null;
+			parkingLotOwner.parkingFull(this.vehicle != null);
 		}
 	}
 
