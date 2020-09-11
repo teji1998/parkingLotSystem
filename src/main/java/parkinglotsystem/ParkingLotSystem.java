@@ -5,7 +5,8 @@ public class ParkingLotSystem {
 	private final int capacity;
 	int currentCapacity =0;
 	private Object vehicle;
-	
+	private ParkingLotOwner parkingLotOwner;
+
 	public ParkingLotSystem(int capacity) {
 		this.capacity = capacity;
 	}

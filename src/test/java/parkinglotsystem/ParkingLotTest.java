@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.security.acl.Owner;
-
 public class ParkingLotTest {
 
 	Object vehicle;
@@ -50,5 +48,24 @@ public class ParkingLotTest {
 		} catch (ParkingLotException e) {
 			Assert.assertEquals("Parking lot is full", e.getMessage());
 		}
+	}
+
+	@Test
+	public void givenAVehicle_WhenParkingLotIsFull_ShouldInformOwner() {
+		ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+		try {
+			parkingLotSystem.parkingVehicle(vehicle);
+			parkingLotSystem.parkingVehicle(new Object());
+			boolean parkingFull = parkingLotOwner.isParkingFull();
+			Assert.assertTrue(parkingFull);
+		} catch (ParkingLotException e) {
+		}
+	}
+
+	@Test
+	public void givenAVehicle_WhenParkingLotIsNotFull_ShouldReturnFalse() {
+		ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+		boolean parkingFull = parkingLotOwner.isParkingFull();
+		Assert.assertFalse(parkingFull);
 	}
 }
