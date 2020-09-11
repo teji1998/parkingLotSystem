@@ -14,15 +14,15 @@ public class ParkingLotSystem {
 		}
 	}
 
-	public boolean isVehicleParked(Object vehicle) {
+	public boolean isVehicleParked(Object vehicle) throws ParkingLotException {
 		if(this.vehicle.equals(vehicle))
 			return true;
-		return false;
+		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_PARKING_EXCEPTION, "Vehicle is not parked");
 	}
 
-	public boolean isVehicleNotParked(Object vehicle) {
+	public boolean isVehicleNotParked() throws ParkingLotException {
 		if (this.vehicle == null)
 			return true;
-		return false;
+		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_UNPARKING_EXCEPTION, "Vehicle is not unparked");
 	}
 }
