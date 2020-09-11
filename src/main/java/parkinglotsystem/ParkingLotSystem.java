@@ -13,7 +13,7 @@ public class ParkingLotSystem {
 		
 	public void parkingVehicle(Object vehicle) throws ParkingLotException {
 		if (this.capacity == currentCapacity)
-			throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_FULL, "Parking lot is full");
+			parkingLotOwner.ParkingFull();
 		this.vehicle = vehicle;
 		currentCapacity ++;
 	}
@@ -34,5 +34,9 @@ public class ParkingLotSystem {
 		if (this.vehicle == null)
 			return true;
 		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_UNPARKING_EXCEPTION, "Vehicle is not unparked");
+	}
+
+	public void registerOwner(ParkingLotOwner parkingLotOwner) {
+		this.parkingLotOwner = parkingLotOwner;
 	}
 }

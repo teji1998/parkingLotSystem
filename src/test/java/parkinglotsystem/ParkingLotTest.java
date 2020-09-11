@@ -8,11 +8,13 @@ public class ParkingLotTest {
 
 	Object vehicle;
 	ParkingLotSystem parkingLotSystem;
+	ParkingLotOwner parkingLotOwner;
 
 	@Before
 	public void setUp() {
 		vehicle = new Object();
 		parkingLotSystem = new ParkingLotSystem(1);
+		parkingLotOwner = new ParkingLotOwner();
 	}
 
 	@Test
@@ -41,30 +43,20 @@ public class ParkingLotTest {
 	}
 
 	@Test
-	public void givenFullParkingLot_WhenOwnerKnows_ShouldThrowException() {
-		try {
-			parkingLotSystem.parkingVehicle(vehicle);
-			parkingLotSystem.parkingVehicle(new Object());
-		} catch (ParkingLotException e) {
-			Assert.assertEquals("Parking lot is full", e.getMessage());
-		}
-	}
-
-	@Test
 	public void givenAVehicle_WhenParkingLotIsFull_ShouldInformOwner() {
-		ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+		parkingLotSystem.registerOwner(parkingLotOwner);
 		try {
 			parkingLotSystem.parkingVehicle(vehicle);
 			parkingLotSystem.parkingVehicle(new Object());
 			boolean parkingFull = parkingLotOwner.isParkingFull();
 			Assert.assertTrue(parkingFull);
 		} catch (ParkingLotException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Test
 	public void givenAVehicle_WhenParkingLotIsNotFull_ShouldReturnFalse() {
-		ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
 		boolean parkingFull = parkingLotOwner.isParkingFull();
 		Assert.assertFalse(parkingFull);
 	}
