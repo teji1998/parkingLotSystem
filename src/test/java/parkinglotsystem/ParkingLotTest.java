@@ -9,12 +9,14 @@ public class ParkingLotTest {
 	Object vehicle;
 	ParkingLotSystem parkingLotSystem;
 	ParkingLotOwner parkingLotOwner;
+	AirportSecurity airportSecurity;
 
 	@Before
 	public void setUp() {
 		vehicle = new Object();
-		parkingLotSystem = new ParkingLotSystem(1);
+		parkingLotSystem = new ParkingLotSystem();
 		parkingLotOwner = new ParkingLotOwner();
+		airportSecurity = new AirportSecurity();
 	}
 
 	@Test
@@ -44,20 +46,33 @@ public class ParkingLotTest {
 
 	@Test
 	public void givenAVehicle_WhenParkingLotIsFull_ShouldInformOwner() {
-		parkingLotSystem.registerOwner(parkingLotOwner);
 		try {
 			parkingLotSystem.parkingVehicle(vehicle);
-			parkingLotSystem.parkingVehicle(new Object());
-			boolean parkingFull = parkingLotOwner.isParkingFull();
-			Assert.assertTrue(parkingFull);
 		} catch (ParkingLotException e) {
-			e.printStackTrace();
+			boolean isFull = parkingLotOwner.isParkingFull();
+			Assert.assertTrue(isFull);
 		}
 	}
 
 	@Test
-	public void givenAVehicle_WhenParkingLotIsNotFull_ShouldReturnFalse() {
+	public void givenAnEmptyLot_WhenInformedToParkingLotOwner_ShouldReturnFalse() {
 		boolean parkingFull = parkingLotOwner.isParkingFull();
+		Assert.assertFalse(parkingFull);
+	}
+
+	@Test
+	public void givenAVehicle_WhenParkingLotIsFull_ShouldInformAirportSecurity() {
+		try {
+			parkingLotSystem.parkingVehicle(vehicle);
+		} catch (ParkingLotException e) {
+			boolean isFull = airportSecurity.isParkingFull();
+			Assert.assertTrue(isFull);
+		}
+	}
+
+	@Test
+	public void givenAnEmptyPlot_WhenAirportSecurityInformed_ShouldReturnFalse() {
+		boolean parkingFull = airportSecurity.isParkingFull();
 		Assert.assertFalse(parkingFull);
 	}
 }

@@ -2,20 +2,16 @@ package parkinglotsystem;
 
 public class ParkingLotSystem {
 
-	private final int capacity;
-	int currentCapacity =0;
 	private Object vehicle;
-	private ParkingLotOwner parkingLotOwner;
+	ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+	AirportSecurity airportSecurity = new AirportSecurity();
 
-	public ParkingLotSystem(int capacity) {
-		this.capacity = capacity;
-	}
-		
 	public void parkingVehicle(Object vehicle) throws ParkingLotException {
-		if (this.capacity == currentCapacity)
-			parkingLotOwner.ParkingFull();
+		if (this.vehicle != null)
+			throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_FULL, "Parking Lot is Full");
 		this.vehicle = vehicle;
-		currentCapacity ++;
+		parkingLotOwner.parkingFull(this.vehicle != null);
+		airportSecurity.parkingFull(this.vehicle != null);
 	}
 
 	public void unParkingVehicle(Object vehicle) {
@@ -36,7 +32,4 @@ public class ParkingLotSystem {
 		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_UNPARKING_EXCEPTION, "Vehicle is not unparked");
 	}
 
-	public void registerOwner(ParkingLotOwner parkingLotOwner) {
-		this.parkingLotOwner = parkingLotOwner;
-	}
 }

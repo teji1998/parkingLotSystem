@@ -1,12 +1,12 @@
 package parkinglotsystem;
 
-public class ParkingLotOwner {
+public class AirportSecurity {
 
-	private static boolean isFull = false;
+	private static boolean isFull;
 
 	public void parkingFull(boolean isFull) {
 		if(isFull)
-			ParkingLotOwner.isFull = true;
+			AirportSecurity.isFull = true;
 	}
 
 	public boolean isParkingFull() {
