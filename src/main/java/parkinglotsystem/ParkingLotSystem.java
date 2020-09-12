@@ -58,8 +58,23 @@ public class ParkingLotSystem {
 	}
 
 	public int initializeParkingLot() {
-		IntStream.range(0,this.capacity).forEach(slots ->vehicles.add(null));
+		IntStream.range(0, this.capacity).forEach(slots -> vehicles.add(null));
 		return vehicles.size();
 	}
 
+	public ArrayList gettingSlot() {
+		ArrayList<Integer> emptySlot = new ArrayList();
+		for (int slot = 0; slot < this.capacity; slot++ ) {
+			if (this.vehicles.get(slot) == null)
+				emptySlot.add(slot);
+		}
+		return emptySlot;
+	}
+
+	public void parkingVehicle(int slot, Object vehicle) throws ParkingLotException {
+		if (isVehicleParked(vehicle)) {
+			throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_EXISTS,"Vehicle is parked");
+		}
+		this.vehicles.set(slot,vehicle);
+	}
 }

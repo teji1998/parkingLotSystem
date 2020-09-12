@@ -4,6 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParkingLotTest {
 
 	Object vehicle;
@@ -141,5 +144,29 @@ public class ParkingLotTest {
 		parkingLotSystem.setCapacity(10);
 		int parkingCapacity = parkingLotSystem.initializeParkingLot();
 		Assert.assertNotEquals(15,parkingCapacity);
+	}
+
+	@Test
+	public void givenParkingLot_WhenEmpty_ShouldReturnEmptySlots() {
+		List expectingList = new ArrayList();
+		expectingList.add(0);
+		expectingList.add(1);
+		parkingLotSystem.setCapacity(2);
+		parkingLotSystem.initializeParkingLot();
+		ArrayList emptySlotList = parkingLotSystem.gettingSlot();
+		Assert.assertEquals(expectingList, emptySlotList);
+	}
+
+	@Test
+	public void givenParkingLot_WhenParkWithProvidedSlot_ShouldReturnTrue() {
+		parkingLotSystem.setCapacity(10);
+		parkingLotSystem.initializeParkingLot();
+		ArrayList<Integer> emptySlotList = parkingLotSystem.gettingSlot();
+		try {
+			parkingLotSystem.parkingVehicle(emptySlotList.get(0),vehicle);
+		} catch (ParkingLotException e) {
+			boolean vehiclePark = parkingLotSystem.isVehicleParked(vehicle);
+			Assert.assertTrue(vehiclePark);
+		}
 	}
 }
