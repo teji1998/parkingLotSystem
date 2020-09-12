@@ -75,6 +75,12 @@ public class ParkingLotSystem {
 		if (isVehicleParked(vehicle)) {
 			throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_EXISTS,"Vehicle is parked");
 		}
-		this.vehicles.set(slot,vehicle);
+		this.vehicles.set(slot, vehicle);
+	}
+
+	public int findingVehicle(Object vehicle) throws ParkingLotException {
+		if (this.vehicles.contains(vehicle))
+			return this.vehicles.indexOf(vehicle);
+		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND, "Vehicle is not present");
 	}
 }

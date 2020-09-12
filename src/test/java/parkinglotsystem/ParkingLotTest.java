@@ -169,4 +169,18 @@ public class ParkingLotTest {
 			Assert.assertTrue(vehiclePark);
 		}
 	}
+
+	@Test
+	public void givenParkingLot_WhenVehicleFound_ShouldVehicleSlot() {
+		parkingLotSystem.setCapacity(10);
+		parkingLotSystem.initializeParkingLot();
+		ArrayList<Integer> emptySlotList = parkingLotSystem.gettingSlot();
+		try {
+			parkingLotSystem.parkingVehicle(emptySlotList.get(0),new Object());
+			parkingLotSystem.parkingVehicle(emptySlotList.get(1),vehicle);
+			int slotNumber = parkingLotSystem.findingVehicle(this.vehicle);
+			Assert.assertEquals(1,slotNumber);
+		} catch (ParkingLotException e) {
+		}
+	}
 }
