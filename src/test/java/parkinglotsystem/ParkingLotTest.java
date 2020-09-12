@@ -128,4 +128,18 @@ public class ParkingLotTest {
 			Assert.assertEquals("Vehicle is parked", e.getMessage());
 		}
 	}
+
+	@Test
+	public void givenParkingLot_WhenInitialized_ShouldGiveTheParkingCapacity() {
+		parkingLotSystem.setCapacity(15);
+		int parkingCapacity = parkingLotSystem.initializeParkingLot();
+		Assert.assertEquals(15,parkingCapacity);
+	}
+
+	@Test
+	public void givenParkingLot_WhenInitializedWithWrongCapacity_ShouldReturnNotEquals() {
+		parkingLotSystem.setCapacity(10);
+		int parkingCapacity = parkingLotSystem.initializeParkingLot();
+		Assert.assertNotEquals(15,parkingCapacity);
+	}
 }

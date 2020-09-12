@@ -2,6 +2,7 @@ package parkinglotsystem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class ParkingLotSystem {
 
@@ -54,6 +55,11 @@ public class ParkingLotSystem {
 			return true;
 		}
 		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_UNPARKING_EXCEPTION,"Vehicle is not present");
+	}
+
+	public int initializeParkingLot() {
+		IntStream.range(0,this.capacity).forEach(slots ->vehicles.add(null));
+		return vehicles.size();
 	}
 
 }
