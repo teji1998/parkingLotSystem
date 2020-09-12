@@ -1,23 +1,24 @@
 package parkinglotsystem;
 
-public class AirportSecurity {
+public class AirportSecurity implements ParkingLotObserver {
 
-	private static boolean isFull;
+	private boolean parkingCapacity;
 
-	public void parkingFull(boolean isFull) {
-		if(isFull)
-			AirportSecurity.isFull = isFull;
+	@Override
+	public void parkingFull() {
+		this.parkingCapacity = true;
+	}
+
+	@Override
+	public void parkingAvailable() {
+		this.parkingCapacity = false;
 	}
 
 	public boolean isParkingFull() {
-		if (isFull)
-			return true;
-		return false;
+		return this.parkingCapacity;
 	}
 
-	public boolean isParkingNotFull() {
-		if (!isFull)
-			return true;
-		return false;
+	public boolean isParkingAvailable() {
+		return this.parkingCapacity;
 	}
 }
