@@ -13,6 +13,8 @@ public class ParkingLotTest {
 	ParkingLot parkingLot;
 	ParkingLotOwner parkingLotOwner;
 	AirportSecurity airportSecurity;
+	ParkingLot parkingLot1;
+	ParkingLotSystem parkingLotSystem;
 
 	@Before
 	public void setUp() {
@@ -22,6 +24,8 @@ public class ParkingLotTest {
 		parkingLot = new ParkingLot(2);
 		parkingLot.registerParkingLotObserver(parkingLotOwner);
 		parkingLot.registerParkingLotObserver(airportSecurity);
+		parkingLot1 = new ParkingLot(10);
+		parkingLotSystem = new ParkingLotSystem(1);
 	}
 
 	@Test
@@ -216,10 +220,21 @@ public class ParkingLotTest {
 	
 	@Test
 	public void givenAParkingLotSystem_WhenAddedALot_ShouldReturnTrue() {
-		ParkingLotSystem parkingLotSystem = new ParkingLotSystem(1);
-		ParkingLot parkingLot = new ParkingLot(10);
-		parkingLotSystem.addLot(parkingLot);
-		boolean isTheLotAdded = parkingLotSystem.isLotAdded(parkingLot);
+		ParkingLot parkingLot2 = new ParkingLot(10);
+		parkingLotSystem.addLot(parkingLot1);
+		parkingLotSystem.addLot(parkingLot2);
+		boolean isTheLotAdded = parkingLotSystem.isLotAdded(parkingLot2);
 		Assert.assertTrue(isTheLotAdded);
+	}
+
+	@Test
+	public void givenParkingLotSystem_WhenParkedVehicleInGivenLot_ShouldReturnTrue() {
+		try {
+			parkingLotSystem.addLot(parkingLot1);
+			boolean isParkedAtALot = parkingLotSystem.parkVehicle(vehicle, parkingLot1);
+			Assert.assertTrue(isParkedAtALot);
+		} catch (ParkingLotException e) {
+
+		}
 	}
 }
