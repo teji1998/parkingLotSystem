@@ -1,6 +1,8 @@
 package parkinglotsystem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ParkingLotSystem {
@@ -23,13 +25,26 @@ public class ParkingLotSystem {
 		return false;
 	}
 
-	public boolean parkVehicle(Object vehicle, ParkingLot parkingLot1) throws ParkingLotException {
-		parkingLot1.setCapacity(10);
-		parkingLot1.initializeParkingLot();
-		if (parkingLots.contains(parkingLot1)) {
-			parkingLot1.parkingVehicle(vehicle);
+	public void parkVehicle(Object vehicle) throws ParkingLotException {
+		List<ParkingLot> parkingLotList = this.parkingLots;
+		Collections.sort(parkingLotList, Comparator.comparing(list -> list.gettingSlot().size(), Comparator.reverseOrder()));
+		ParkingLot lot = parkingLotList.get(0);
+		lot.parkingVehicle(vehicle);
+	}
+
+	public boolean isVehicleParked(Object vehicle) {
+		if (this.parkingLots.get(0).isVehicleParked(vehicle))
 			return true;
-		}
 		return false;
 	}
+
+	public boolean isVehicleNotParked(Object vehicle) throws ParkingLotException {
+		for (int parkingLot = 0; parkingLot < this.parkingLots.size(); parkingLot++) {
+			if (this.parkingLots.get(parkingLot).isVehicleNotParked(vehicle)) {
+				return true;
+			}
+		}
+		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND, "VEHICLE IS NOT AVAILABLE");
+	}
 }
+

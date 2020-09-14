@@ -229,12 +229,65 @@ public class ParkingLotTest {
 
 	@Test
 	public void givenParkingLotSystem_WhenParkedVehicleInGivenLot_ShouldReturnTrue() {
+		parkingLotSystem.addLot(parkingLot1);
+		parkingLot1.setCapacity(1);
+		parkingLot1.initializeParkingLot();
 		try {
-			parkingLotSystem.addLot(parkingLot1);
-			boolean isParkedAtALot = parkingLotSystem.parkVehicle(vehicle, parkingLot1);
-			Assert.assertTrue(isParkedAtALot);
+			parkingLotSystem.parkVehicle(vehicle);
 		} catch (ParkingLotException e) {
+			boolean isParkedAtALot = parkingLotSystem.isVehicleParked(vehicle);
+			Assert.assertTrue(isParkedAtALot);
+		}
+	}
 
+	@Test
+	public void givenAParkingLotSystem_WhenCarIsEvenlyDistributed_ShouldReturnTrue() {
+		parkingLot1.setCapacity(4);
+		parkingLot1.initializeParkingLot();
+		parkingLotSystem.addLot(parkingLot1);
+		ParkingLot parkingLot2 = new ParkingLot(4);
+		parkingLot2.setCapacity(4);
+		parkingLot2.initializeParkingLot();
+		Object vehicle2 = new Object();
+		Object vehicle3 = new Object();
+		Object vehicle4 = new Object();
+		parkingLotSystem.addLot(parkingLot2);
+		try {
+			parkingLotSystem.parkVehicle(vehicle);
+			boolean isVehiclePark1 = parkingLotSystem.isVehicleParked(vehicle);
+			parkingLotSystem.parkVehicle(vehicle2);
+			boolean isVehiclePark2 = parkingLotSystem.isVehicleParked(vehicle2);
+			parkingLotSystem.parkVehicle(vehicle3);
+			boolean isVehiclePark3 = parkingLotSystem.isVehicleParked(vehicle3);
+			parkingLotSystem.parkVehicle(vehicle4);
+			boolean isVehiclePark4 = parkingLotSystem.isVehicleParked(vehicle4);
+			Assert.assertTrue(isVehiclePark1 && isVehiclePark2 && isVehiclePark3 && isVehiclePark4);
+		} catch (ParkingLotException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void givenParkingLotSystem_WhenVehicleUnPark_ShouldReturnTrue() throws ParkingLotException {
+		parkingLot1.setCapacity(10);
+		parkingLot1.initializeParkingLot();
+		parkingLotSystem.addLot(parkingLot1);
+		ParkingLot parkingLot2 = new ParkingLot(10);
+		parkingLot2.setCapacity(10);
+		parkingLot2.initializeParkingLot();
+		Object vehicle2 = new Object();
+		Object vehicle3 = new Object();
+		Object vehicle4 = new Object();
+		parkingLotSystem.addLot(parkingLot2);
+		try {
+			parkingLotSystem.parkVehicle(vehicle);
+			parkingLotSystem.parkVehicle(vehicle2);
+			parkingLotSystem.parkVehicle(vehicle3);
+			parkingLotSystem.parkVehicle(vehicle4);
+
+		} catch (ParkingLotException e) {
+			boolean isUnParkVehicle = parkingLotSystem.isVehicleNotParked(vehicle);
+			Assert.assertTrue(isUnParkVehicle);
 		}
 	}
 }
