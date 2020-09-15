@@ -27,8 +27,8 @@ public class ParkingLot {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	public void parkingVehicle(Object vehicle) throws ParkingLotException {
-		ParkingSlot parkingSlot = new ParkingSlot(vehicle);
+	public void parkingVehicle(Object vehicle, ParkingStrategy driverType) throws ParkingLotException {
+		ParkingSlot parkingSlot = new ParkingSlot(vehicle, driverType);
 		if (!this.vehicles.contains(null)) {
 			for (ParkingLotObserver observer : parkingLotObservers) {
 				observer.parkingFull();
