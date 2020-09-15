@@ -4,17 +4,17 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ParkingSlot {
-	private Enum type;
+	private Enum driverType;
 	LocalDateTime time;
-	Object vehicle;
+	Vehicle vehicle;
 
-	public ParkingSlot(Object vehicle, Enum type) {
+	public ParkingSlot(Vehicle vehicle, Enum driverType) {
 		this.vehicle = vehicle;
 		this.time = LocalDateTime.now();
-		this.type = type;
+		this.driverType = driverType;
 	}
 
-	public ParkingSlot(Object vehicle) {
+	public ParkingSlot(Vehicle vehicle) {
 		this.vehicle = vehicle;
 	}
 

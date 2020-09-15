@@ -33,7 +33,7 @@ public class ParkingLot {
 		this.capacity = capacity;
 	}
 
-	public void parkingVehicle(Object vehicle, Enum driverType) throws ParkingLotException {
+	public void parkingVehicle(Vehicle vehicle, Enum driverType) throws ParkingLotException {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle, driverType);
 		if (!this.vehicles.contains(null)) {
 			for (ParkingLotObserver observer : parkingLotObservers) {
@@ -49,14 +49,14 @@ public class ParkingLot {
 		vehicleCount ++;
 	}
 
-	public boolean isVehicleParked(Object vehicle) {
+	public boolean isVehicleParked(Vehicle vehicle) {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle);
 		if (this.vehicles.contains(parkingSlot))
 				return true;
 			return false;
 	}
 
-	public boolean isVehicleNotParked(Object vehicle) throws ParkingLotException {
+	public boolean isVehicleNotParked(Vehicle vehicle) throws ParkingLotException {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle);
 		for (int slotnumber = 0; slotnumber < this.vehicles.size(); slotnumber++) {
 			if (this.vehicles.contains(parkingSlot)) {
@@ -96,14 +96,14 @@ public class ParkingLot {
 		throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_FULL, "Parking is full");
 	}
 
-	public int findingVehicle(Object vehicle) throws ParkingLotException {
+	public int findingVehicle(Vehicle vehicle) throws ParkingLotException {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle);
 		if (this.vehicles.contains(parkingSlot))
 			return this.vehicles.indexOf(parkingSlot);
 		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND, "Vehicle is not present");
 	}
 
-	public boolean isTimeSet(Object vehicle) {
+	public boolean isTimeSet(Vehicle vehicle) {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle);
 		for (int i = 0; i < this.vehicles.size(); i++) {
 			if (this.vehicles.get(i).time != null && this.vehicles.contains(parkingSlot))
@@ -114,5 +114,17 @@ public class ParkingLot {
 
 	public int  getVehicleCount(){
 		return vehicleCount;
+	}
+
+	public ArrayList<Integer> findOnField(String fieldName) {
+		ArrayList<Integer> fieldList = new ArrayList<>();
+		for (int i = 0; i < this.vehicles.size(); i++) {
+			if ((this.vehicles.get(i) != null)) {
+				if (this.vehicles.get(i).vehicle.getColor().equals(fieldName)) {
+					fieldList.add(i);
+				}
+			}
+		}
+		return fieldList;
 	}
 }
