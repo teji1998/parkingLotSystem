@@ -12,7 +12,12 @@ public class ParkingLot {
 	private List<ParkingSlot> vehicles;
 	private ParkingLotOwner owner;
 	private List<ParkingLotObserver> parkingLotObservers;
+	int vehicleCount;
 
+	public ParkingLot() {
+		this.parkingLotObservers = new ArrayList<>();
+		this.vehicles = new ArrayList();
+	}
 
 	public ParkingLot(int capacity) {
 		this.capacity = capacity;
@@ -27,7 +32,8 @@ public class ParkingLot {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	public void parkingVehicle(Object vehicle, ParkingStrategy driverType) throws ParkingLotException {
+
+	public void parkingVehicle(Object vehicle, Enum driverType) throws ParkingLotException {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle, driverType);
 		if (!this.vehicles.contains(null)) {
 			for (ParkingLotObserver observer : parkingLotObservers) {
@@ -40,6 +46,7 @@ public class ParkingLot {
 		}
 		int emptySlot = getParkingSlot();
 		this.vehicles.set(emptySlot, parkingSlot);
+		vehicleCount ++;
 	}
 
 	public boolean isVehicleParked(Object vehicle) {
@@ -54,6 +61,8 @@ public class ParkingLot {
 		for (int slotnumber = 0; slotnumber < this.vehicles.size(); slotnumber++) {
 			if (this.vehicles.contains(parkingSlot)) {
 				this.vehicles.set(slotnumber, null);
+
+				vehicleCount--;
 				for (ParkingLotObserver observer : parkingLotObservers) {
 					observer.parkingAvailable();
 				}
@@ -101,5 +110,9 @@ public class ParkingLot {
 				return true;
 		}
 		return false;
+	}
+
+	public int  getVehicleCount(){
+		return vehicleCount;
 	}
 }

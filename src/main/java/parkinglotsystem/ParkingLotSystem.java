@@ -25,9 +25,10 @@ public class ParkingLotSystem {
 		return false;
 	}
 
-	public void parkVehicle(Object vehicle, ParkingStrategy driverType) throws ParkingLotException {
-		ParkingLot lot1 = driverType.getParkingLot(this.parkingLots);
-		lot1.parkingVehicle(vehicle,driverType);
+	public void parkVehicle(Object vehicle, Enum type) throws ParkingLotException {
+		ParkingStrategy parkingLotStrategy = AssignLot.car(type);
+		ParkingLot lot = parkingLotStrategy.getParkingLot(this.parkingLots);
+		lot.parkingVehicle(vehicle, type);
 	}
 
 	public boolean isVehicleParked(Object vehicle) {

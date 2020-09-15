@@ -4,8 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public enum NormalDriverStrategy implements ParkingStrategy {
-	NORMAL;
+public class NormalDriverStrategy implements ParkingStrategy {
 
 	@Override
 	public ParkingLot getParkingLot(List<ParkingLot> parkingLots) throws ParkingLotException {
