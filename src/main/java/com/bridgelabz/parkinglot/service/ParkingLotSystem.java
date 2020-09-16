@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class ParkingLotSystem {
 	private int lotCapacity;
 	private List<ParkingLot> parkingLots;
+
 	public ParkingLotSystem(int lotCapacity) {
 		this.lotCapacity = lotCapacity;
 		parkingLots = new ArrayList<>();
@@ -63,11 +64,10 @@ public class ParkingLotSystem {
 	}
 
 	public List<List<Integer>> findBMWVehicle(String fieldName) {
-		List<List<Integer>> listOfLotsWithWhiteVehicles = this.parkingLots.stream()
+		List<List<Integer>> listOfLotsBMWVehicles = this.parkingLots.stream()
 				  .map(lot -> lot.findParkedBMWVehicleDetails(fieldName))
 				  .collect(Collectors.toList());
-		return  listOfLotsWithWhiteVehicles;
+		return  listOfLotsBMWVehicles;
 	}
-
 
 }

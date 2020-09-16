@@ -347,7 +347,7 @@ public class ParkingLotTest {
 	}
 
 	@Test
-	public void givenParkingLotSystem_WhenLargeVehicleParked_ShouldReturnTrue() {
+	public void givenParkingLot_WhenLargeVehicleParked_ShouldReturnTrue() {
 		parkingLot1.setCapacity(10);
 		parkingLot1.initializeParkingLot();
 		parkingLotSystem.addLot(parkingLot1);
@@ -379,7 +379,7 @@ public class ParkingLotTest {
 	}
 
 	@Test
-	public void givenParkingLotSystem_WhenParkedVehicleColorIsWhite_ShouldReturn1() {
+	public void givenParkingLot_WhenParkedVehicleColorIsWhite_ShouldReturn1() {
 		parkingLot.setCapacity(3);
 		parkingLot.initializeParkingLot();
 		Vehicle vehicle1 = new Vehicle("white");
@@ -396,7 +396,7 @@ public class ParkingLotTest {
 	}
 
 	@Test
-	public void givenParkingLotSystem_WhenParkedVehicleColorIsBlue_ShouldListParkedSlots() {
+	public void givenParkingLot_WhenParkedVehicleColorIsBlue_ShouldListParkedSlots() {
 		parkingLot1.setCapacity(10);
 		parkingLot1.initializeParkingLot();
 		parkingLotSystem.addLot(parkingLot1);
@@ -434,7 +434,7 @@ public class ParkingLotTest {
 	}
 
 	@Test
-	public void givenParkingLotSystem_WhenParkedBlueToyotaCar_ShouldReturnLocationAndAttendantNameAndPlateNumber() {
+	public void givenParkingLot_WhenParkedBlueToyotaCar_ShouldReturnLocationAndAttendantNameAndPlateNumber() {
 		parkingLot.setCapacity(20);
 		parkingLot.initializeParkingLot();
 		Vehicle vehicle1 = new Vehicle("white","toyota","MH-12-A-1234");
@@ -459,8 +459,9 @@ public class ParkingLotTest {
 		}
 	}
 
+
 	@Test
-	public void givenParkingLotSystem_WhenParkedBMWVehicle_ShouldReturnLocation() {
+	public void givenParkingLot_WhenParkedBMWVehicle_ShouldReturnLocation() {
 		parkingLot.setCapacity(20);
 		parkingLot.initializeParkingLot();
 		Vehicle vehicle1 = new Vehicle("white","toyota","MH-12-A-1234");
@@ -483,5 +484,27 @@ public class ParkingLotTest {
 			Assert.assertEquals(expectedResult, vehicleByNumberPlate);
 		} catch (ParkingLotException e) {
 		}
+	}
+
+	@Test
+	public void givenParkingLot_ShouldReturnAllParkingListBefore30Min() {
+		parkingLot.setCapacity(20);
+		parkingLot.initializeParkingLot();
+		Vehicle vehicle1 = new Vehicle("white","toyota","MH-12-A-1234");
+		Vehicle vehicle2 = new Vehicle("blue","BMW","MH-12-A-1234");
+		Vehicle vehicle3 = new Vehicle("blue","toyota","MH-12-A-1234");
+		try {
+			parkingLot.parkingVehicle(vehicle1, DriverType.NORMAL, "asb");
+			parkingLot.parkingVehicle(vehicle2, DriverType.NORMAL, "xyz");
+			parkingLot.parkingVehicle(vehicle3, DriverType.NORMAL, "pqr");
+			List<String> vehicleByNumberPlate = parkingLot. getVehiclesWhichIsParkedFrom30Min();
+			List expectedResult = new ArrayList();
+			expectedResult.add("0 toyota MH-12-A-1234");
+			expectedResult.add("1 BMW MH-12-A-1234");
+			expectedResult.add("2 toyota MH-12-A-1234");
+			Assert.assertEquals(expectedResult, vehicleByNumberPlate);
+		} catch (ParkingLotException e) {
+		}
+
 	}
 }

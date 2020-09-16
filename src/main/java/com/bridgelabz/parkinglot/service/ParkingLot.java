@@ -6,6 +6,7 @@ import com.bridgelabz.parkinglot.model.Vehicle;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.observer.ParkingLotOwner;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -130,25 +131,35 @@ public class ParkingLot {
 	}
 
 	public List<String> findParkedToyatoVehicleDetails(String color, String modelName) {
-		List<String> fieldList = new ArrayList<>();
-		List<String> fieldList1 = new ArrayList<>();
-		fieldList = this.vehicles.stream()
+		List<String> toyotaList = new ArrayList<>();
+		toyotaList = this.vehicles.stream()
 				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
 				  .filter(parkingSlot -> parkingSlot.getVehicle().getModelName().equals(modelName))
 				  .filter(parkingSlot -> parkingSlot.getVehicle().getColor().equals(color))
 				  .map(parkingSlot -> (parkingSlot.getAttendantName())+"  "+(parkingSlot.getSlot())+"  "+(parkingSlot.vehicle.getNumberPlate()))
 				  .collect(Collectors.toList());
-		return fieldList;
+		return toyotaList;
 	}
 
 	public List<Integer> findParkedBMWVehicleDetails(String modelName) {
-		List<Integer> whiteVehicleList = new ArrayList<>();
-		whiteVehicleList = this.vehicles.stream()
+		List<Integer> bmwVehicleList = new ArrayList<>();
+		bmwVehicleList = this.vehicles.stream()
 				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
 				  .filter(parkingSlot -> parkingSlot.getVehicle().getModelName().equals(modelName))
 				  .map(parkingSlot -> parkingSlot.getSlot())
 				  .collect(Collectors.toList());
-		return whiteVehicleList;
+		return bmwVehicleList;
+	}
+
+	public List<String> getVehiclesWhichIsParkedFrom30Min() {
+		List<String> befor30MinParkVehicleList = new ArrayList<>();
+		befor30MinParkVehicleList = this.vehicles.stream()
+				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
+				  .filter(parkingSlot -> parkingSlot.getTime().getMinute()- LocalDateTime.now().getMinute() <=30)
+				  .map(parkingSlot -> ((parkingSlot.getSlot()))+" "+(parkingSlot.getVehicle().getModelName())+" "+(parkingSlot.getVehicle().getNumberPlate()))
+				  .collect(Collectors.toList());
+		return befor30MinParkVehicleList;
+
 	}
 
 }
