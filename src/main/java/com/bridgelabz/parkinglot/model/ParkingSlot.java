@@ -25,6 +25,10 @@ public class ParkingSlot {
 		this.slot=slot;
 	}
 
+	public Enum getType() {
+		return type;
+	}
+
 	public int getSlot() {
 		return slot;
 	}

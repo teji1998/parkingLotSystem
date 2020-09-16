@@ -63,11 +63,4 @@ public class ParkingLotSystem {
 		return parkingLotsList;
 	}
 
-	public List<List<Integer>> findBMWVehicle(String fieldName) {
-		List<List<Integer>> listOfLotsBMWVehicles = this.parkingLots.stream()
-				  .map(lot -> lot.findParkedBMWVehicleDetails(fieldName))
-				  .collect(Collectors.toList());
-		return  listOfLotsBMWVehicles;
-	}
-
 }

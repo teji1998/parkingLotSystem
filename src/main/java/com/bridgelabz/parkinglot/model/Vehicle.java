@@ -1,5 +1,9 @@
 package com.bridgelabz.parkinglot.model;
 
+import com.bridgelabz.parkinglot.observer.ParkingStrategy;
+
+import java.util.Objects;
+
 public class Vehicle {
 
 	private String modelName;
@@ -24,6 +28,15 @@ public class Vehicle {
 		return modelName;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Vehicle vehicle = (Vehicle) o;
+		return Objects.equals(modelName, vehicle.modelName) &&
+				  Objects.equals(numberPlate, vehicle.numberPlate) &&
+				  Objects.equals(color, vehicle.color) ;
+	}
 
 	public String getColor() {
 		return color;

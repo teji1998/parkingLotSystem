@@ -73,8 +73,8 @@ public class ParkingLotTest {
 		ParkingLotOwner parkingOwner = new ParkingLotOwner();
 		parkingLot.registerParkingLotObserver(parkingOwner);
 		try {
-			parkingLot.parkingVehicle(vehicle, DriverType.NORMAL, "XYZ");
-			parkingLot.parkingVehicle(new Vehicle("black"), DriverType.NORMAL, "XYZ");
+			parkingLot.parkingVehicle(vehicle, DriverType.NORMAL, "xyz");
+			parkingLot.parkingVehicle(new Vehicle("black"), DriverType.NORMAL, "xyz");
 		} catch (ParkingLotException e) {
 		}
 		boolean parkingFull = parkingOwner.isParkingFull();
@@ -297,7 +297,7 @@ public class ParkingLotTest {
 			boolean isUnParkVehicle = parkingLotSystem.isVehicleNotParked(vehicle3);
 			Assert.assertTrue(isUnParkVehicle);
 		} catch (ParkingLotException e) {
-			Assert.assertEquals("VEHICLE IS NOT AVAILABLE", e.getMessage());
+			Assert.assertEquals("VEHICLE ALREADY PARK", e.getMessage());
 		}
 	}
 
@@ -490,14 +490,14 @@ public class ParkingLotTest {
 	public void givenParkingLot_ShouldReturnAllParkingListBefore30Min() {
 		parkingLot.setCapacity(20);
 		parkingLot.initializeParkingLot();
-		Vehicle vehicle1 = new Vehicle("white","toyota","MH-12-A-1234");
-		Vehicle vehicle2 = new Vehicle("blue","BMW","MH-12-A-1234");
-		Vehicle vehicle3 = new Vehicle("blue","toyota","MH-12-A-1234");
+		Vehicle vehicle1 = new Vehicle("white", "toyota", "MH-12-A-1234");
+		Vehicle vehicle2 = new Vehicle("blue", "BMW", "MH-12-A-1234");
+		Vehicle vehicle3 = new Vehicle("blue", "toyota", "MH-12-A-1234");
 		try {
 			parkingLot.parkingVehicle(vehicle1, DriverType.NORMAL, "asb");
 			parkingLot.parkingVehicle(vehicle2, DriverType.NORMAL, "xyz");
 			parkingLot.parkingVehicle(vehicle3, DriverType.NORMAL, "pqr");
-			List<String> vehicleByNumberPlate = parkingLot. getVehiclesWhichIsParkedFrom30Min();
+			List<String> vehicleByNumberPlate = parkingLot.getVehiclesWhichIsParkedFrom30Min();
 			List expectedResult = new ArrayList();
 			expectedResult.add("0 toyota MH-12-A-1234");
 			expectedResult.add("1 BMW MH-12-A-1234");
@@ -505,6 +505,32 @@ public class ParkingLotTest {
 			Assert.assertEquals(expectedResult, vehicleByNumberPlate);
 		} catch (ParkingLotException e) {
 		}
-
 	}
+
+	@Test
+	public void givenParkingLot_WhenParkedVehicle_ShouldReturnLocation() {
+		parkingLot.setCapacity(20);
+		parkingLot.initializeParkingLot();
+		Vehicle vehicle1 = new Vehicle("white","toyota","MH-12-A-1234");
+		Vehicle vehicle2 = new Vehicle("blue","BMW","MH-12-A-1234");
+		Vehicle vehicle3 = new Vehicle("blue","toyota","MH-12-A-1234");
+		Vehicle vehicle4 = new Vehicle("white","toyota","MH-12-A-1234");
+		Vehicle vehicle5 = new Vehicle("white","BMW","MH-12-A-1234");
+		Vehicle vehicle6 = new Vehicle("blue","toyota","MH-12-B-1234");
+		try {
+			parkingLot.parkingVehicle(vehicle1, DriverType.NORMAL, "asb");
+			parkingLot.parkingVehicle(vehicle2, DriverType.NORMAL, "xyz");
+			parkingLot.parkingVehicle(vehicle3, DriverType.NORMAL, "pqr");
+			parkingLot.parkingVehicle(vehicle4, DriverType.NORMAL, "xyz");
+			parkingLot.parkingVehicle(vehicle5, DriverType.NORMAL, "xyz");
+			parkingLot.parkingVehicle(vehicle6, DriverType.NORMAL, "xyz");
+			List<Integer> vehicleByNumberPlate = parkingLot.findVehicleDetails("xxx");
+			List expectedResult = new ArrayList();
+			expectedResult.add(1);
+			expectedResult.add(4);
+			Assert.assertEquals(expectedResult, vehicleByNumberPlate);
+		} catch (ParkingLotException e) {
+		}
+	}
+
 }

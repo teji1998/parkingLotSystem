@@ -5,6 +5,7 @@ import com.bridgelabz.parkinglot.model.ParkingSlot;
 import com.bridgelabz.parkinglot.model.Vehicle;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.observer.ParkingLotOwner;
+import com.bridgelabz.parkinglot.observer.ParkingStrategy;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,9 +16,7 @@ import java.util.stream.IntStream;
 public class ParkingLot {
 	private int capacity;
 	private ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
-	private Object vehicle;
 	private List<ParkingSlot> vehicles;
-	private ParkingLotOwner owner;
 	private List<ParkingLotObserver> parkingLotObservers;
 	int vehicleCount;
 
@@ -136,7 +135,8 @@ public class ParkingLot {
 				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
 				  .filter(parkingSlot -> parkingSlot.getVehicle().getModelName().equals(modelName))
 				  .filter(parkingSlot -> parkingSlot.getVehicle().getColor().equals(color))
-				  .map(parkingSlot -> (parkingSlot.getAttendantName())+"  "+(parkingSlot.getSlot())+"  "+(parkingSlot.vehicle.getNumberPlate()))
+				  .map(parkingSlot -> (parkingSlot.getAttendantName())+"  "+(parkingSlot.getSlot())+"  "
+						    +(parkingSlot.vehicle.getNumberPlate()))
 				  .collect(Collectors.toList());
 		return toyotaList;
 	}
@@ -152,14 +152,25 @@ public class ParkingLot {
 	}
 
 	public List<String> getVehiclesWhichIsParkedFrom30Min() {
-		List<String> befor30MinParkVehicleList = new ArrayList<>();
-		befor30MinParkVehicleList = this.vehicles.stream()
+		List<String> before30MinutesList = new ArrayList<>();
+		before30MinutesList = this.vehicles.stream()
 				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
 				  .filter(parkingSlot -> parkingSlot.getTime().getMinute()- LocalDateTime.now().getMinute() <=30)
-				  .map(parkingSlot -> ((parkingSlot.getSlot()))+" "+(parkingSlot.getVehicle().getModelName())+" "+(parkingSlot.getVehicle().getNumberPlate()))
+				  .map(parkingSlot -> ((parkingSlot.getSlot()))+" "+(parkingSlot.getVehicle().getModelName())+" "
+						    +(parkingSlot.getVehicle().getNumberPlate()))
 				  .collect(Collectors.toList());
-		return befor30MinParkVehicleList;
-
+		return before30MinutesList;
 	}
+
+	public List<Integer> findVehicleDetails(String numberPlate) {
+		List<Integer> bmwVehicleList = new ArrayList<>();
+		bmwVehicleList = this.vehicles.stream()
+				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
+				  .filter(parkingSlot -> parkingSlot.getVehicle().getNumberPlate().equals(numberPlate))
+				  .map(parkingSlot -> parkingSlot.getSlot())
+				  .collect(Collectors.toList());
+		return bmwVehicleList;
+	}
+
 
 }
