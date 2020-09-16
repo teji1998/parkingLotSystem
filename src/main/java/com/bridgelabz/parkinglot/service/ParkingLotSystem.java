@@ -29,7 +29,7 @@ public class ParkingLotSystem {
 	public void parkVehicle(Vehicle vehicle, Enum type, String XYZ) throws ParkingLotException {
 		ParkingStrategy parkingLotStrategy = AssignLot.car(type);
 		ParkingLot lot = parkingLotStrategy.getParkingLot(this.parkingLots);
-		lot.parkingVehicle(vehicle, type, "xyz");
+		lot.parkingVehicle(vehicle, type, "XYZ");
 	}
 
 	public boolean isVehicleParked(Vehicle vehicle) {

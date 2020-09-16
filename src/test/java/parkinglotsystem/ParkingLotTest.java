@@ -11,20 +11,33 @@ import com.bridgelabz.parkinglot.observer.ParkingStrategy;
 import com.bridgelabz.parkinglot.service.ParkingLot;
 import com.bridgelabz.parkinglot.service.ParkingLotSystem;
 import com.bridgelabz.parkinglot.utility.AssignLot;
+
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.*;
+
 public class ParkingLotTest {
 
+	@Mock
 	Vehicle vehicle;
 	ParkingLot parkingLot;
 	ParkingLotOwner parkingLotOwner;
 	AirportSecurity airportSecurity;
 	ParkingLot parkingLot1;
 	ParkingLotSystem parkingLotSystem;
+	private ParkingLot mockedLot;
+
+	@Rule
+	public MockitoRule mockitoRule = MockitoJUnit.rule();
 
 	@Before
 	public void setUp() {
@@ -36,6 +49,7 @@ public class ParkingLotTest {
 		parkingLot.registerParkingLotObserver(airportSecurity);
 		parkingLot1 = new ParkingLot(10);
 		parkingLotSystem = new ParkingLotSystem(1);
+		mockedLot = mock(ParkingLot.class);
 	}
 
 	@Test
@@ -66,19 +80,20 @@ public class ParkingLotTest {
 	}
 
 	@Test
-	public void givenAVehicle_WhenParkingLotIsFull_ShouldInformOwner() {
+	public void givenVehicle_WhenParkingLotFull_ShouldInformToOwner() {
 		ParkingLot parkingLot = new ParkingLot(1);
 		parkingLot.initializeParkingLot();
 		Vehicle vehicle = new Vehicle("black");
 		ParkingLotOwner parkingOwner = new ParkingLotOwner();
 		parkingLot.registerParkingLotObserver(parkingOwner);
 		try {
-			parkingLot.parkingVehicle(vehicle, DriverType.NORMAL, "xyz");
-			parkingLot.parkingVehicle(new Vehicle("black"), DriverType.NORMAL, "xyz");
+			parkingLot.parkingVehicle(vehicle, DriverType.NORMAL, "XYZ");
+			parkingLot.parkingVehicle(new Vehicle("black"), DriverType.NORMAL, "XYZ");
+			boolean parkingFull = parkingOwner.isParkingFull();
+			Assert.assertTrue(parkingFull);
 		} catch (ParkingLotException e) {
 		}
-		boolean parkingFull = parkingOwner.isParkingFull();
-		Assert.assertTrue(parkingFull);
+
 	}
 
 	@Test
@@ -129,11 +144,34 @@ public class ParkingLotTest {
 		try {
 			parkingLot.parkingVehicle(vehicle,DriverType.NORMAL, "XYZ");
 			parkingLot.parkingVehicle(new Vehicle("black"),DriverType.NORMAL, "XYZ");
+			boolean parkingFull = airportSecurity.isParkingFull();
+			Assert.assertTrue(parkingFull);
 		} catch (ParkingLotException e) {
 		}
-		boolean parkingFull = airportSecurity.isParkingFull();
-		Assert.assertTrue(parkingFull);
+
 	}
+
+	@Test
+	public void givenVehicle_WhenSpaceIsAvailable_ShouldInformToAirportSecurity() {
+		ParkingLot parkingLot = new ParkingLot();
+		parkingLot.setCapacity(2);
+		parkingLot.initializeParkingLot();
+		AirportSecurity airportSecurity = new AirportSecurity();
+		Vehicle vehicle = new Vehicle("black");
+		parkingLot.registerParkingLotObserver(airportSecurity);
+		try {
+			parkingLot.parkingVehicle(vehicle,DriverType.NORMAL, "XYZ");
+			parkingLot.parkingVehicle(new Vehicle("black"),DriverType.NORMAL, "XYZ");
+		} catch (ParkingLotException e) {
+		}
+		try {
+			parkingLot.isVehicleNotParked(vehicle);
+		} catch (ParkingLotException e) {
+		}
+		boolean parkingAvailable = airportSecurity.isParkingAvailable();
+		Assert.assertFalse(parkingAvailable);
+}
+
 
 	@Test
 	public void givenCapacityIs2ShouldBeAbleToPark2Vehicle() {
@@ -245,11 +283,13 @@ public class ParkingLotTest {
 
 	@Test
 	public void givenParkingLotSystem_WhenParkedVehicleInGivenLot_ShouldReturnTrue() {
-		parkingLotSystem.addLot(parkingLot1);
+		parkingLotSystem.addLot(mockedLot);
 		parkingLot1.setCapacity(1);
 		parkingLot1.initializeParkingLot();
 		try {
 			parkingLotSystem.parkVehicle(vehicle, DriverType.NORMAL, "xyz");
+			verify(mockedLot).parkingVehicle(vehicle, DriverType.NORMAL, "XYZ");
+			when(mockedLot.isVehicleParked(vehicle)).thenReturn(true);
 		} catch (ParkingLotException e) {
 			boolean isParkedAtALot = parkingLotSystem.isVehicleParked(vehicle);
 			Assert.assertTrue(isParkedAtALot);
@@ -257,28 +297,46 @@ public class ParkingLotTest {
 	}
 
 	@Test
-	public void givenAParkingLotSystem_WhenCarIsEvenlyDistributed_ShouldReturnTrue() {
+	public void givenParkingLotSystem_WhenVehicleNotParkedOnLot_ShouldReturnFalse() {
+		parkingLotSystem.addLot(mockedLot);
+		Vehicle vehicle = new Vehicle("black");
+		Vehicle vehicle2 = new Vehicle("black");
+		try {
+			parkingLotSystem.parkVehicle(vehicle, DriverType.NORMAL, "XYZ");
+			verify(mockedLot).parkingVehicle(vehicle, DriverType.NORMAL, "XYZ");
+			when(mockedLot.isVehicleParked(vehicle2)).thenReturn(false);
+			boolean isVehiclePark = parkingLotSystem.isVehicleParked(vehicle2);
+			Assert.assertFalse(isVehiclePark);
+		} catch (ParkingLotException e) {
+		}
+	}
+
+	@Test
+	public void givenParkingLotSystem_WhenVehicleShouldParkInEvenlyDistributedLots_ShouldReturnTrue() {
 		parkingLot1.setCapacity(10);
 		parkingLot1.initializeParkingLot();
-		parkingLotSystem.addLot(parkingLot1);
+		parkingLotSystem.addLot(mockedLot);
+
 		ParkingLot parkingLot2 = new ParkingLot(10);
 		parkingLot2.setCapacity(10);
 		parkingLot2.initializeParkingLot();
+
 		Vehicle vehicle = new Vehicle("black");
 		Vehicle vehicle2 = new Vehicle("black");
 		Vehicle vehicle3 = new Vehicle("white");
 		Vehicle vehicle4 = new Vehicle("blue");
+
 		parkingLotSystem.addLot(parkingLot2);
 		try {
-			parkingLotSystem.parkVehicle(vehicle, DriverType.NORMAL, "xyz");
+			parkingLotSystem.parkVehicle(vehicle, DriverType.NORMAL, "XYZ");
 			boolean isVehiclePark1 = parkingLotSystem.isVehicleParked(vehicle);
-			parkingLotSystem.parkVehicle(vehicle2, DriverType.NORMAL, "xyz");
+			parkingLotSystem.parkVehicle(vehicle2, DriverType.NORMAL, "XYZ");
 			boolean isVehiclePark2 = parkingLotSystem.isVehicleParked(vehicle2);
-			parkingLotSystem.parkVehicle(vehicle3, DriverType.NORMAL, "xyz");
+			parkingLotSystem.parkVehicle(vehicle3, DriverType.NORMAL, "XYZ");
 			boolean isVehiclePark3 = parkingLotSystem.isVehicleParked(vehicle3);
-			parkingLotSystem.parkVehicle(vehicle4, DriverType.NORMAL, "xyz");
+			parkingLotSystem.parkVehicle(vehicle4, DriverType.NORMAL, "XYZ");
 			boolean isVehiclePark4 = parkingLotSystem.isVehicleParked(vehicle4);
-			Assert.assertTrue(isVehiclePark1 != isVehiclePark2 && isVehiclePark3 != isVehiclePark4);
+			Assert.assertTrue(isVehiclePark1 && isVehiclePark2 && isVehiclePark3 && isVehiclePark4);
 		} catch (ParkingLotException e) {
 		}
 	}

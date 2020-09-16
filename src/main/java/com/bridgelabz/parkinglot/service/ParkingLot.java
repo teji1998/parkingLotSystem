@@ -18,6 +18,7 @@ public class ParkingLot {
 	private ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
 	private List<ParkingSlot> vehicles;
 	private List<ParkingLotObserver> parkingLotObservers;
+	private ParkingLotOwner owner;
 	int vehicleCount;
 
 	public ParkingLot() {
