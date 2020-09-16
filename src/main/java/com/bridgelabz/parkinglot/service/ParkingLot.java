@@ -4,6 +4,7 @@ import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.ParkingSlot;
 import com.bridgelabz.parkinglot.model.Vehicle;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
+import com.bridgelabz.parkinglot.observer.ParkingLotOwner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ParkingLot {
-
 	private int capacity;
+	private ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+	private Object vehicle;
 	private List<ParkingSlot> vehicles;
+	private ParkingLotOwner owner;
 	private List<ParkingLotObserver> parkingLotObservers;
 	int vehicleCount;
 
@@ -38,25 +41,20 @@ public class ParkingLot {
 
 	public void parkingVehicle(Vehicle vehicle, Enum driverType, String attendantName) throws ParkingLotException {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle, driverType, attendantName);
-		if (!this.vehicles.contains(null)) {
-			for (ParkingLotObserver observer : parkingLotObservers) {
-				observer.parkingFull();
-			}
-			throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_FULL, "Parking Lot is Full");
-		}
 		if (isVehicleParked(vehicle)) {
-			throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_EXISTS, "Vehicle is parked");
+			throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_FULL, "VEHICLE ALREADY PARK");
 		}
 		int emptySlot = getParkingSlot();
+		parkingSlot.setSlot(emptySlot);
 		this.vehicles.set(emptySlot, parkingSlot);
-		vehicleCount ++;
+		vehicleCount++;
 	}
 
 	public boolean isVehicleParked(Vehicle vehicle) {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle);
 		if (this.vehicles.contains(parkingSlot))
-				return true;
-			return false;
+			return true;
+		return false;
 	}
 
 	public boolean isVehicleNotParked(Vehicle vehicle) throws ParkingLotException {
@@ -73,32 +71,33 @@ public class ParkingLot {
 	}
 
 	public int initializeParkingLot() {
-		IntStream.range(0, this.capacity).forEach(slots -> vehicles.add(null));
+		IntStream.range(0, this.capacity).forEach(slots -> this.vehicles.add(new ParkingSlot(slots)));
 		return vehicles.size();
 	}
 
-	public ArrayList getSlotList() {
-		ArrayList<Integer> emptySlots = new ArrayList();
+	public ArrayList gettingSlot() {
+		ArrayList<Integer> emptySlot = new ArrayList();
 		IntStream.range(0, capacity)
 				  .filter(slot -> this.vehicles.get(slot).getVehicle() == null)
-				  .forEach(slot -> emptySlots.add(slot));
-		if (emptySlots.size() == 0) {
+				  .forEach(slot -> emptySlot.add(slot));
+		if (emptySlot.size() == 0) {
 			for (ParkingLotObserver observer : parkingLotObservers) {
 				observer.parkingFull();
 			}
 		}
-		return emptySlots;
+		return emptySlot;
 	}
 
 	public int getParkingSlot() throws ParkingLotException {
-		ArrayList<Integer> emptySlotList = getSlotList();
+		ArrayList<Integer> emptySlotList = gettingSlot();
 		for (int slot = 0; slot < emptySlotList.size(); slot++) {
 			if (emptySlotList.get(0) == (slot)) {
 				return slot;
 			}
 		}
-		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND, "PARKING IS FULL");
+		throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_FULL, "Parking is full");
 	}
+
 	public int findingVehicle(Vehicle vehicle) throws ParkingLotException {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle);
 		if (this.vehicles.contains(parkingSlot))
@@ -115,11 +114,12 @@ public class ParkingLot {
 		return false;
 	}
 
-	public int  getVehicleCount(){
+	public int getParkVehicleCount() {
 		return vehicleCount;
 	}
 
 	public List<Integer> findOnField(String fieldName) {
+		System.out.println(this.vehicles.toString());
 		List<Integer> whiteVehicleList = new ArrayList<>();
 		whiteVehicleList = this.vehicles.stream()
 				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
@@ -140,4 +140,15 @@ public class ParkingLot {
 				  .collect(Collectors.toList());
 		return fieldList;
 	}
+
+	public List<Integer> findParkedBMWVehicleDetails(String modelName) {
+		List<Integer> whiteVehicleList = new ArrayList<>();
+		whiteVehicleList = this.vehicles.stream()
+				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
+				  .filter(parkingSlot -> parkingSlot.getVehicle().getModelName().equals(modelName))
+				  .map(parkingSlot -> parkingSlot.getSlot())
+				  .collect(Collectors.toList());
+		return whiteVehicleList;
+	}
+
 }

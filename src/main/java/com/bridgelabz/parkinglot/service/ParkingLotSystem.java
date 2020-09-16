@@ -3,7 +3,6 @@ package com.bridgelabz.parkinglot.service;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.Vehicle;
 import com.bridgelabz.parkinglot.observer.ParkingStrategy;
-import com.bridgelabz.parkinglot.service.ParkingLot;
 import com.bridgelabz.parkinglot.utility.AssignLot;
 
 import java.util.ArrayList;
@@ -11,37 +10,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ParkingLotSystem {
-
 	private int lotCapacity;
 	private List<ParkingLot> parkingLots;
-
 	public ParkingLotSystem(int lotCapacity) {
 		this.lotCapacity = lotCapacity;
 		parkingLots = new ArrayList<>();
 	}
-
 	public void addLot(ParkingLot parkingLot) {
 		this.parkingLots.add(parkingLot);
 	}
-
 	public boolean isLotAdded(ParkingLot parkingLot) {
 		if (this.parkingLots.contains(parkingLot))
 			return true;
 		return false;
 	}
 
-	public void parkVehicle(Vehicle vehicle, Enum type, String xyz) throws ParkingLotException {
-		ParkingStrategy parkingStrategy = AssignLot.car(type);
-		ParkingLot lot = parkingStrategy.getParkingLot(this.parkingLots);
-		lot.parkingVehicle(vehicle, type, "XYZ");
+	public void parkVehicle(Vehicle vehicle, Enum type, String XYZ) throws ParkingLotException {
+		ParkingStrategy parkingLotStrategy = AssignLot.car(type);
+		ParkingLot lot = parkingLotStrategy.getParkingLot(this.parkingLots);
+		lot.parkingVehicle(vehicle, type, "xyz");
 	}
 
 	public boolean isVehicleParked(Vehicle vehicle) {
-		for (int i = 0; i < this.parkingLots.size(); i++) {
-			if (this.parkingLots.get(i).isVehicleParked(vehicle)) {
-				return true;
-			}
-		}
+		if (this.parkingLots.get(0).isVehicleParked(vehicle))
+			return true;
 		return false;
 	}
 
@@ -69,5 +61,13 @@ public class ParkingLotSystem {
 		}
 		return parkingLotsList;
 	}
-}
 
+	public List<List<Integer>> findBMWVehicle(String fieldName) {
+		List<List<Integer>> listOfLotsWithWhiteVehicles = this.parkingLots.stream()
+				  .map(lot -> lot.findParkedBMWVehicleDetails(fieldName))
+				  .collect(Collectors.toList());
+		return  listOfLotsWithWhiteVehicles;
+	}
+
+
+}

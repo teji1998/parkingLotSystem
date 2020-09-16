@@ -4,25 +4,27 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ParkingSlot {
-	private int slot;
-	private Enum driverType;
+	
+	private Enum type;
 	public LocalDateTime time;
 	public Vehicle vehicle;
-	String attendantName;
+	public String attendantName;
+	private int slot;
 
 	public void setSlot(int slot) {
 		this.slot = slot;
 	}
-
 	public ParkingSlot(Vehicle vehicle, Enum driverType, String parkingAttendantName) {
 		this.vehicle = vehicle;
 		this.time = LocalDateTime.now();
-		this.driverType = driverType;
+		this.type = driverType;
 		this.attendantName = parkingAttendantName;
 	}
+
 	public ParkingSlot(int slot) {
 		this.slot=slot;
 	}
+
 	public int getSlot() {
 		return slot;
 	}
@@ -30,24 +32,24 @@ public class ParkingSlot {
 	public LocalDateTime getTime() {
 		return time;
 	}
+
 	public Vehicle getVehicle() {
 		return vehicle;
 	}
-	public String getAttendantName() {
 
+	public String getAttendantName() {
 		return attendantName;
 	}
+
 	public ParkingSlot(Vehicle vehicle) {
 		this.vehicle = vehicle;
 	}
 
 	@Override
-	public boolean equals(Object o) {
+		public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ParkingSlot that = (ParkingSlot) o;
-		return Objects.equals(vehicle, that.vehicle);
+		return vehicle.equals(that.vehicle);
 	}
-
 }
-

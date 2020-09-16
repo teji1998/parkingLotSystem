@@ -2,18 +2,18 @@ package com.bridgelabz.parkinglot.model;
 
 public class Vehicle {
 
-	private String numberPlate;
 	private String modelName;
+	private String numberPlate;
 	private String color;
 
 	public Vehicle(String color) {
 		this.color = color;
 	}
 
-    public Vehicle(String color, String modelName, String numberPlate) {
-			this.color=color;
-			this.numberPlate=numberPlate;
-			this.modelName = modelName;
+	public Vehicle(String color, String modelName, String numberPlate) {
+		this.color = color;
+		this.numberPlate = numberPlate;
+		this.modelName = modelName;
 	}
 
 	public String getNumberPlate() {
@@ -23,6 +23,7 @@ public class Vehicle {
 	public String getModelName() {
 		return modelName;
 	}
+
 
 	public String getColor() {
 		return color;

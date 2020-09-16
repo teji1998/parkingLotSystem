@@ -13,7 +13,7 @@ public class NormalDriverStrategy implements ParkingStrategy {
 	@Override
 	public ParkingLot getParkingLot(List<ParkingLot> parkingLots) {
 		List<ParkingLot> parkingLotsList = new ArrayList<>(parkingLots);
-		Collections.sort(parkingLotsList, Comparator.comparing(list -> list.getSlotList().size(), Comparator.reverseOrder()));
+		Collections.sort(parkingLotsList, Comparator.comparing(list -> list.gettingSlot().size(), Comparator.reverseOrder()));
 		return parkingLotsList.get(0);
 	}
 }
