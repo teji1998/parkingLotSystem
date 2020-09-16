@@ -483,7 +483,8 @@ public class ParkingLotTest {
 			parkingLotSystem.parkVehicle(vehicle6, DriverType.NORMAL, "xyz");
 			parkingLotSystem.parkVehicle(vehicle7, DriverType.NORMAL, "xyz");
 			parkingLotSystem.parkVehicle(vehicle8, DriverType.NORMAL, "xyz");
-			List<List<String>> vehicleByNumberPlate = parkingLotSystem.findVehicleByNumberPlate("blue", "toyota");
+			List<List<String>> vehicleByNumberPlate = parkingLotSystem.findVehicleByNumberPlate("blue",
+					  "toyota");
 			List expectedResult = new ArrayList();
 			expectedResult.add("xyz  2  MH-12-C-1234");
 			Assert.assertEquals(expectedResult, vehicleByNumberPlate.get(0));
