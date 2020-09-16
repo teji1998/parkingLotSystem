@@ -40,10 +40,12 @@ public class ParkingLot {
 		this.capacity = capacity;
 	}
 
-	public void parkingVehicle(Vehicle vehicle, Enum driverType, String attendantName) throws ParkingLotException {
+	public void parkingVehicle(Vehicle vehicle, Enum driverType, String attendantName)
+			  throws ParkingLotException {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle, driverType, attendantName);
 		if (isVehicleParked(vehicle)) {
-			throw new ParkingLotException(ParkingLotException.ExceptionType.PARKING_LOT_FULL, "VEHICLE ALREADY PARK");
+			throw new ParkingLotException(ParkingLotException.ExceptionType.
+					  PARKING_LOT_FULL, "VEHICLE ALREADY PARK");
 		}
 		int emptySlot = getParkingSlot();
 		parkingSlot.setSlot(emptySlot);
@@ -103,7 +105,8 @@ public class ParkingLot {
 		ParkingSlot parkingSlot = new ParkingSlot(vehicle);
 		if (this.vehicles.contains(parkingSlot))
 			return this.vehicles.indexOf(parkingSlot);
-		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND, "Vehicle is not present");
+		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND,
+				  "Vehicle is not present");
 	}
 
 	public boolean isTimeSet(Vehicle vehicle) {
@@ -136,7 +139,7 @@ public class ParkingLot {
 				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
 				  .filter(parkingSlot -> parkingSlot.getVehicle().getModelName().equals(modelName))
 				  .filter(parkingSlot -> parkingSlot.getVehicle().getColor().equals(color))
-				  .map(parkingSlot -> (parkingSlot.getAttendantName())+"  "+(parkingSlot.getSlot())+"  "
+				  .map(parkingSlot -> (parkingSlot.getAttendantName())+" "+(parkingSlot.getSlot())+" "
 						    +(parkingSlot.vehicle.getNumberPlate()))
 				  .collect(Collectors.toList());
 		return toyotaList;
@@ -156,8 +159,10 @@ public class ParkingLot {
 		List<String> before30MinutesList = new ArrayList<>();
 		before30MinutesList = this.vehicles.stream()
 				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
-				  .filter(parkingSlot -> parkingSlot.getTime().getMinute()- LocalDateTime.now().getMinute() <=30)
-				  .map(parkingSlot -> ((parkingSlot.getSlot()))+" "+(parkingSlot.getVehicle().getModelName())+" "
+				  .filter(parkingSlot -> parkingSlot.getTime().getMinute()- LocalDateTime.now()
+						    .getMinute() <=30)
+				  .map(parkingSlot -> ((parkingSlot.getSlot()))+" "+(parkingSlot.getVehicle()
+						    .getModelName())+" "
 						    +(parkingSlot.getVehicle().getNumberPlate()))
 				  .collect(Collectors.toList());
 		return before30MinutesList;
@@ -167,7 +172,8 @@ public class ParkingLot {
 		List<Integer> bmwVehicleList = new ArrayList<>();
 		bmwVehicleList = this.vehicles.stream()
 				  .filter(parkingSlot -> parkingSlot.getVehicle() != null)
-				  .filter(parkingSlot -> parkingSlot.getVehicle().getNumberPlate().equals(numberPlate))
+				  .filter(parkingSlot -> parkingSlot.getVehicle().getNumberPlate()
+						    .equals(numberPlate))
 				  .map(parkingSlot -> parkingSlot.getSlot())
 				  .collect(Collectors.toList());
 		return bmwVehicleList;

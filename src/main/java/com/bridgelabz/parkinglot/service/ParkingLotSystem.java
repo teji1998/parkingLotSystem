@@ -44,7 +44,8 @@ public class ParkingLotSystem {
 				return true;
 			}
 		}
-		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND, "VEHICLE IS NOT AVAILABLE");
+		throw new ParkingLotException(ParkingLotException.ExceptionType.VEHICLE_NOT_FOUND,
+				  "VEHICLE IS NOT AVAILABLE");
 	}
 
 	public List<List<Integer>> findVehicleByField(String fieldName) {

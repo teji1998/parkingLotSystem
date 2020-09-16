@@ -517,7 +517,6 @@ public class ParkingLotTest {
 		}
 	}
 
-
 	@Test
 	public void givenParkingLot_WhenParkedBMWVehicle_ShouldReturnLocation() {
 		parkingLot.setCapacity(20);
@@ -590,5 +589,4 @@ public class ParkingLotTest {
 		} catch (ParkingLotException e) {
 		}
 	}
-
 }
